@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Partido } from '../modelo/Partido';
 
 @Component({
   selector: 'app-home',
@@ -54,6 +56,21 @@ export class HomePage  implements OnInit {
   }
 
   onSubmit(values){
+    let partido:Partido;
+    partido=new Partido(values['fechaPartido'],
+      values['grupoEquipos']['equipoLocal'].equipo,
+      values['grupoEquipos']['equipoVisitante'].equipo,
+      values['golesLocal'],
+      values['golesVisitante'],
+      this.jugadoresLocal,
+      this.jugadoresVisitante
+    );
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+          partido: JSON.stringify(partido)
+      }
+    };
+    this.navCtrl.navigateForward('/pagina2', navigationExtras);
   }
 
   onChangeEquipoLocal($event){
